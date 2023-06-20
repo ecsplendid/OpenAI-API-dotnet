@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace OpenAI_API.Chat
@@ -125,22 +126,28 @@ namespace OpenAI_API.Chat
 		/// <returns>The <see cref="ChatResult"/> with the API response.</returns>
 		public Task<ChatResult> CreateChatCompletionAsync(params string[] userMessages) => CreateChatCompletionAsync(userMessages.Select(m => new ChatMessage(ChatMessageRole.User, m)).ToArray());
 
-		#endregion
+        #endregion
 
-		#region Streaming
+        #region Streaming
 
-		/// <summary>
-		/// Ask the API to complete the message(s) using the specified request, and stream the results to the <paramref name="resultHandler"/> as they come in.
-		/// If you are on the latest C# supporting async enumerables, you may prefer the cleaner syntax of <see cref="StreamChatEnumerableAsync(ChatRequest)"/> instead.
-		/// </summary>
-		/// <param name="request">The request to send to the API. This does not fall back to default values specified in <see cref="DefaultChatRequestArgs"/>.</param>
-		/// <param name="resultHandler">An action to be called as each new result arrives, which includes the index of the result in the overall result set.</param>
-		public async Task StreamCompletionAsync(ChatRequest request, Action<int, ChatResult> resultHandler)
+        /// <summary>
+        /// Ask the API to complete the message(s) using the specified request, and stream the results to the <paramref name="resultHandler"/> as they come in.
+        /// If you are on the latest C# supporting async enumerables, you may prefer the cleaner syntax of <see cref="StreamChatEnumerableAsync(ChatRequest)"/> instead.
+        /// </summary>
+        /// <param name="request">The request to send to the API. This does not fall back to default values specified in <see cref="DefaultChatRequestArgs"/>.</param>
+        /// <param name="resultHandler">An action to be called as each new result arrives, which includes the index of the result in the overall result set.</param>
+        /// <param name="cancellationToken"></param>
+        public async Task StreamCompletionAsync(ChatRequest request, Action<int, ChatResult> resultHandler, CancellationToken cancellationToken = default)
 		{
 			int index = 0;
 
 			await foreach (var res in StreamChatEnumerableAsync(request))
 			{
+				if(cancellationToken.IsCancellationRequested)
+				{
+					break;
+				}
+
 				resultHandler(index++, res);
 			}
 		}

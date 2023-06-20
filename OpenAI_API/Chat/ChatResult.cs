@@ -16,6 +16,9 @@ namespace OpenAI_API.Chat
 		[JsonProperty("id")]
 		public string Id { get; set; }
 
+		[JsonProperty("finished")]
+		public bool Finished { get; set; }
+
 		/// <summary>
 		/// The list of choices that the user was presented with during the chat interaction
 		/// </summary>
