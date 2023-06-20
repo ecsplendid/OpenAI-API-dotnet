@@ -168,6 +168,9 @@ namespace OpenAI_API.Models
 		/// Snapshot of gpt-3.5-turbo from June 13th 2023. This model allows the use of function calling as well as more reliable steering via the system message.
 		/// </summary>
 		public static Model ChatGPTTurbo0613 => new Model("gpt-3.5-turbo-0613") { OwnedBy = "openai" };
+		public static Model ChatGPTTurbo061316k => new Model("gpt-3.5-turbo-16k-0613") { OwnedBy = "openai" };
+		public static Model ChatGPTTurbo16k => new Model("gpt-3.5-turbo-16k") { OwnedBy = "openai" };
+    
         /// <summary>
         ///  Snapshot of gpt-4 from June 13th 2023. This model allows the use of function calling as well as more reliable steering via the system message.
         /// </summary>
