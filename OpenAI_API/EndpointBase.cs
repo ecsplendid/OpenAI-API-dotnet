@@ -381,11 +381,11 @@ namespace OpenAI_API
 					{
 						// hack to send a finished message downstream
 						// so that the client knows the stream has ended
-						if(typeof(T) == typeof(ChatResult)){
+						//if(typeof(T) == typeof(ChatResult)){
 							yield return new ChatResult{
 								Finished = true,
 							} as T;
-						}
+						//}
 						yield break;
 					}
 					else if (line.StartsWith(":"))
